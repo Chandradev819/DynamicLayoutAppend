@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+    <div class="main-layout">
+        <header>
+            <h1>My Application</h1>
+        </header>
+
+        <div class="content">
+            @Body <!-- Main content from the page -->
+        </div>
+
+        @if (AdditionalContent != null)
+        {
+            <div class="additional-components">
+                @AdditionalContent <!-- Render additional content here -->
+            </div>
+        }
+
+        <footer>
+            <p>&copy; 2024 My Application</p>
+        </footer>
+    </div>
+</CascadingValue>
+
+@code {
+    public RenderFragment? AdditionalContent { get; set; }
+   
+    public void TriggerRender() => StateHasChanged();
+}

@@ -1,0 +1,21 @@
+﻿@page "/fullpage"
+
+@layout Layout.LayoutPage1
+
+<h3>Welcome to the Home Page!</h3>
+
+@code {
+    [CascadingParameter] public Layout.LayoutPage1? MainLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (MainLayout != null)
+        {
+            MainLayout.RenderComponentAsFragment<Hello>(new Dictionary<string, object>
+            {
+                { "Parameter1", "This is fill page" },
+                { "Parameter2", 100 }
+            });
+        }
+    }
+}

@@ -1,0 +1,45 @@
+﻿@page "/dynamicpage"
+@layout Layout.LayoutPage2
+
+<h3>Welcome to the Home Page!</h3>
+
+@code {
+    [CascadingParameter] public Layout.LayoutPage2? MainLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (MainLayout != null)
+        {
+            // Update the header with custom content
+            MainLayout.UpdateHeader(builder =>
+            {
+                builder.AddMarkupContent(0, "<h1>Home Page Header</h1>");
+                builder.AddMarkupContent(1, "<p>This is the updated header content for the Home Page.</p>");
+            });
+
+            // Update the footer with custom content
+            MainLayout.UpdateFooter(builder =>
+            {
+                builder.AddMarkupContent(0, "<p>&copy; 2024 Home Page Footer</p>");
+                builder.AddMarkupContent(1, "<p>Contact us at contact@example.com</p>");
+            });
+
+            // Example of adding dynamic components
+            var componentsToRender = new List<(Type ComponentType, IDictionary<string, object>? Parameters)>
+            {
+                (typeof(Hello), new Dictionary<string, object>
+                {
+                    { "Parameter1", "Value for Component 1" },
+                    { "Parameter2", 100 }
+                }),
+                (typeof(Hello1), new Dictionary<string, object>
+                {
+                    { "Parameter1", "Value for Component 2" },
+                    { "Parameter2", 200 }
+                })
+            };
+
+            MainLayout.SetAdditionalComponents(componentsToRender);
+        }
+    }
+}

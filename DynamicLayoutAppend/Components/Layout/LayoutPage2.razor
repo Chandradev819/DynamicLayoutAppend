@@ -1,0 +1,66 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+    <div class="main-layout">
+        <header>
+            @if (HeaderContent != null)
+            {
+                @HeaderContent
+            }
+            else
+            {
+                <h1>My Application</h1> <!-- Default header content -->
+            }
+        </header>
+
+        <div class="content">
+            @Body <!-- Main content from the page -->
+        </div>
+
+        <div class="dynamic-components">
+            @if (AdditionalComponents != null)
+            {
+                foreach (var component in AdditionalComponents)
+                {
+                    <DynamicComponent Type="@component.ComponentType" Parameters="@component.Parameters" />
+                }
+            }
+        </div>
+
+        <footer>
+            @if (FooterContent != null)
+            {
+                @FooterContent
+            }
+            else
+            {
+                <p>&copy; 2024 My Application</p> <!-- Default footer content -->
+            }
+        </footer>
+    </div>
+</CascadingValue>
+
+@code {
+    public List<(Type ComponentType, IDictionary<string, object>? Parameters)>? AdditionalComponents { get; set; }
+    public RenderFragment? HeaderContent { get; set; }
+    public RenderFragment? FooterContent { get; set; }
+
+    // Method to set a list of components to render
+    public void SetAdditionalComponents(List<(Type ComponentType, IDictionary<string, object>? Parameters)> components)
+    {
+        AdditionalComponents = components;
+        StateHasChanged();
+    }
+
+    public void UpdateHeader(RenderFragment? headerContent)
+    {
+        HeaderContent = headerContent;
+        StateHasChanged();
+    }
+
+    public void UpdateFooter(RenderFragment? footerContent)
+    {
+        FooterContent = footerContent;
+        StateHasChanged();
+    }
+}

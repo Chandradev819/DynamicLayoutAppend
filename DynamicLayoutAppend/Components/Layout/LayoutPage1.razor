@@ -1,0 +1,49 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+    <div class="main-layout">
+        <header>
+            <h1>My Application</h1>
+        </header>
+
+        <div class="content">
+            @Body <!-- Main content from the page -->
+        </div>
+
+        <div class="dynamic-component">
+            @if (AdditionalContent != null)
+            {
+                @AdditionalContent
+            }
+        </div>
+
+        <footer>
+            <p>&copy; 2024 My Application</p>
+        </footer>
+    </div>
+</CascadingValue>
+
+@code {
+    public RenderFragment? AdditionalContent { get; set; }
+
+    // Method to render a component as a RenderFragment
+    public void RenderComponentAsFragment<TComponent>(IDictionary<string, object>? parameters = null) where TComponent : IComponent
+    {
+        AdditionalContent = builder =>
+        {
+            builder.OpenComponent<TComponent>(0);
+
+            if (parameters != null)
+            {
+                foreach (var parameter in parameters)
+                {
+                    builder.AddAttribute(1, parameter.Key, parameter.Value);
+                }
+            }
+
+            builder.CloseComponent();
+        };
+
+        StateHasChanged();
+    }
+}

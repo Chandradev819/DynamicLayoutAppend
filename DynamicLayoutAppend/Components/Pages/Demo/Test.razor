@@ -1,0 +1,46 @@
+﻿@page "/test"
+@layout Layout.DynamicLayout
+
+<h3>Welcome to the Home Page!</h3>
+
+@code {
+    [CascadingParameter] public Layout.DynamicLayout? MainLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (MainLayout != null)
+        {
+            // Update the header with a component and its parameters
+            MainLayout.UpdateHeader(typeof(Header), new Dictionary<string, object>
+            {
+                { "Title", "Home Page Header" },
+                { "Subtitle", "Subtitle for Home Page" }
+            });
+
+            // Update the footer with a component and its parameters
+            MainLayout.UpdateFooter(typeof(Footer), new Dictionary<string, object>
+            {
+                { "Year", 2024 },
+                { "CompanyName", "My Home Page" },
+                { "AdditionalInfo", "Footer Info for Home Page" }
+            });
+
+            // Example of adding dynamic components
+            var componentsToRender = new List<(Type ComponentType, IDictionary<string, object>? Parameters)>
+            {
+                (typeof(Hello), new Dictionary<string, object>
+                {
+                    { "Parameter1", "Value for Component 1" },
+                    { "Parameter2", 100 }
+                }),
+                (typeof(Hello1), new Dictionary<string, object>
+                {
+                    { "Parameter1", "Value for Component 2" },
+                    { "Parameter2", 200 }
+                })
+            };
+
+            MainLayout.SetAdditionalComponents(componentsToRender);
+        }
+    }
+}

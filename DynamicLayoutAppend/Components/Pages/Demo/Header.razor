@@ -1,0 +1,9 @@
+﻿<div class="custom-header">
+    <h1>@Title</h1>
+    <p>@Subtitle</p>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Default Header";
+    [Parameter] public string Subtitle { get; set; } = "Default Subtitle";
+}

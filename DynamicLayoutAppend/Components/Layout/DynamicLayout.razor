@@ -1,0 +1,167 @@
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+    <div class="main-layout">
+        <header>
+            @if (HeaderComponentType != null)
+            {
+                <DynamicComponent Type="@HeaderComponentType" Parameters="@HeaderComponentParameters" />
+            }
+            else
+            {
+                <h1>Default Header</h1>
+            }
+        </header>
+
+        <div class="content">
+            @Body <!-- Main content from the page -->
+        </div>
+
+        <div class="dynamic-components">
+            @if (AdditionalComponents != null)
+            {
+                foreach (var component in AdditionalComponents)
+                {
+                    <DynamicComponent Type="@component.ComponentType" Parameters="@component.Parameters" />
+                }
+            }
+        </div>
+
+        <footer>
+            @if (FooterComponentType != null)
+            {
+                <DynamicComponent Type="@FooterComponentType" Parameters="@FooterComponentParameters" />
+            }
+            else
+            {
+                <p>&copy; 2024 My Application</p>
+            }
+        </footer>
+    </div>
+</CascadingValue>
+
+@code {
+    public List<(Type ComponentType, IDictionary<string, object>? Parameters)>? AdditionalComponents { get; set; }
+    public Type? HeaderComponentType { get; set; }
+    public IDictionary<string, object>? HeaderComponentParameters { get; set; }
+    public Type? FooterComponentType { get; set; }
+    public IDictionary<string, object>? FooterComponentParameters { get; set; }
+
+    public void UpdateHeader(Type componentType, IDictionary<string, object>? parameters)
+    {
+        HeaderComponentType = componentType;
+        HeaderComponentParameters = parameters;
+        StateHasChanged();
+    }
+
+    public void UpdateFooter(Type componentType, IDictionary<string, object>? parameters)
+    {
+        FooterComponentType = componentType;
+        FooterComponentParameters = parameters;
+        StateHasChanged();
+    }
+
+    // Method to set a list of components to render
+    public void SetAdditionalComponents(List<(Type ComponentType, IDictionary<string, object>? Parameters)> components)
+    {
+        AdditionalComponents = components;
+        StateHasChanged();
+    }
+}
+
+<style>
+    /* General Layout Styling */
+    .main-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    /* Header Styling */
+    header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            line-height: 1.2;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+    /* Content Area Styling */
+    .content {
+        flex: 1;
+        padding: 2rem;
+        background-color: #f8f9fa;
+    }
+
+    /* Dynamic Components Section */
+    .dynamic-components {
+        margin: 2rem 0;
+    }
+
+    /* Footer Styling */
+    footer {
+        background-color: #343a40;
+        color: #fff;
+        padding: 1rem 2rem;
+        text-align: center;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        footer p {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+    /* Utility Classes */
+    .text-center {
+        text-align: center;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .box-shadow {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .padding-small {
+        padding: 0.5rem;
+    }
+
+    .padding-medium {
+        padding: 1rem;
+    }
+
+    .padding-large {
+        padding: 2rem;
+    }
+
+    .margin-small {
+        margin: 0.5rem;
+    }
+
+    .margin-medium {
+        margin: 1rem;
+    }
+
+    .margin-large {
+        margin: 2rem;
+    }
+
+</style>

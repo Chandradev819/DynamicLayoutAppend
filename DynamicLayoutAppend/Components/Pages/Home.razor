@@ -1,0 +1,24 @@
+﻿@page "/"
+@layout Layout.MainLayout
+
+<h3>Welcome to the Home Page!</h3>
+
+@code {
+    [CascadingParameter] public Layout.MainLayout? MainLayout { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (MainLayout != null)
+        {
+            MainLayout.AdditionalContent = builder =>
+            {
+                builder.OpenComponent<Hello>(0);
+                builder.AddAttribute(1, "Parameter1", "Dynamic Value 1");
+                builder.AddAttribute(2, "Parameter2", 100);
+                builder.CloseComponent();
+            };
+
+            MainLayout.TriggerRender();
+        }
+    }
+}
